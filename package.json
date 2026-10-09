@@ -1,0 +1,68 @@
+{
+  "name": "eboda",
+  "productName": "Eboda",
+  "version": "0.4.0",
+  "description": "A free PDF reader and editor",
+  "author": "MissCelery",
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "node prepare.js && electron-builder --win"
+  },
+  "build": {
+    "appId": "app.eboda.desktop",
+    "productName": "Eboda",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "print.html",
+      "app/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "Eboda-Setup-${version}.${ext}",
+      "signAndEditExecutable": false
+    },
+    "fileAssociations": [
+      {
+        "ext": "pdf",
+        "name": "PDF Document",
+        "description": "PDF Document",
+        "mimeType": "application/pdf",
+        "role": "Editor",
+        "icon": "build/pdf.ico"
+      }
+    ],
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Eboda",
+      "deleteAppDataOnUninstall": false
+    },
+    "afterPack": "./afterPack.js"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
+    "resedit": "^2.0.3",
+    "pdfjs-dist": "5.4.296",
+    "pdf-lib": "1.17.1"
+  },
+  "repository": "https://github.com/MissCelery/Eboda"
+}
