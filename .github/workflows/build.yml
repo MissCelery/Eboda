@@ -13,9 +13,6 @@ permissions:
 jobs:
   build:
     runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: desktop
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -42,5 +39,5 @@ jobs:
         with:
           name: Eboda-Setup
           path: |
-            desktop/dist/Eboda-Setup-*.exe
-            desktop/dist/SHA256.txt
+            dist/Eboda-Setup-*.exe
+            dist/SHA256.txt
