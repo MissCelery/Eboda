@@ -1,0 +1,46 @@
+name: Build Windows installer
+
+# Runs when you publish a Release on GitHub, builds Eboda from the code in this
+# repository on a clean Windows machine, and attaches the installer to the Release.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm run dist
+      - name: Make a checksum file
+        shell: pwsh
+        run: |
+          $f = Get-ChildItem dist\Eboda-Setup-*.exe | Select-Object -First 1
+          $h = (Get-FileHash $f.FullName -Algorithm SHA256).Hash.ToLower()
+          "$h  $($f.Name)" | Out-File -Encoding ascii dist\SHA256.txt
+      - name: Attach to the Release
+        if: github.event_name == 'release'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $f = Get-ChildItem dist\Eboda-Setup-*.exe | Select-Object -First 1
+          gh release upload "${{ github.event.release.tag_name }}" $f.FullName dist\SHA256.txt --clobber --repo "${{ github.repository }}"
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          name: Eboda-Setup
+          path: |
+            desktop/dist/Eboda-Setup-*.exe
+            desktop/dist/SHA256.txt
