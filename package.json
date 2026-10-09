@@ -15,12 +15,11 @@
     "productName": "Eboda",
     "directories": {
       "output": "dist",
-      "buildResources": "build"
+      "buildResources": "."
     },
     "files": [
       "main.js",
       "preload.js",
-      "print.html",
       "app/**/*"
     ],
     "win": {
@@ -32,7 +31,7 @@
           ]
         }
       ],
-      "icon": "build/icon.ico",
+      "icon": "icon.ico",
       "artifactName": "Eboda-Setup-${version}.${ext}",
       "signAndEditExecutable": false
     },
@@ -43,7 +42,7 @@
         "description": "PDF Document",
         "mimeType": "application/pdf",
         "role": "Editor",
-        "icon": "build/pdf.ico"
+        "icon": "pdf.ico"
       }
     ],
     "nsis": {

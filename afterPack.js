@@ -9,7 +9,7 @@ module.exports = async ctx => {
   const data = fs.readFileSync(exe);
   const pe = ResEdit.NtExecutable.from(data);
   const res = ResEdit.NtExecutableResource.from(pe);
-  const icon = ResEdit.Data.IconFile.from(fs.readFileSync(path.join(__dirname, "build", "icon.ico")));
+  const icon = ResEdit.Data.IconFile.from(fs.readFileSync(path.join(__dirname, "icon.ico")));
   ResEdit.Resource.IconGroupEntry.replaceIconsForResource(res.entries, 1, 1033, icon.icons.map(i => i.data));
   const vi = ResEdit.Resource.VersionInfo.createEmpty();
   const [a,b,c] = pkg.version.split(".").map(Number);
